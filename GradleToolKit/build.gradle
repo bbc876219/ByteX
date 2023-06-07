@@ -9,7 +9,8 @@ dependencies {
     compileOnly gradleApi()
     compileOnly "com.android.tools.build:gradle:$gradle_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile project(':GradleEnvApi')
+//    compile project(':GradleEnvApi')
+    compile project(path: ':GradleEnvApi', configuration: 'default')
     compile("com.bytedance.android.build:gradle-compat-api:$gradle_compat_version")
     runtime("com.bytedance.android.build:gradle-compat-impl:$gradle_compat_version")
 

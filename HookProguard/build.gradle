@@ -1,6 +1,8 @@
 apply from: rootProject.file('gradle/plugin.gradle')
 dependencies {
-    implementation project(':ProguardConfigurationResolver')
-    implementation project(':ProguardConfigurationResolver-task')
-    implementation project(':ProguardConfigurationResolver-transform')
+    implementation project(path: ':ProguardConfigurationResolver', configuration: 'default')
+    implementation project(path: ':ProguardConfigurationResolver-task', configuration: 'default')
+    implementation project(path: '::ProguardConfigurationResolver-transform', configuration: 'default')
+
+
 }

@@ -8,8 +8,8 @@ dependencies {
     compileOnly gradleApi()
     compileOnly "com.android.tools.build:gradle:$gradle_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    compile project(':common')
-    compile project(':PluginConfigProcessor')
+    compile project(path: ':common', configuration: 'default')
+    compile project(path: ':PluginConfigProcessor', configuration: 'default')
     kapt project(':PluginConfigProcessor')
 }
 sourceCompatibility = "1.8"

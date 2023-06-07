@@ -5,7 +5,8 @@ version "$upload_version"
 dependencies {
     compileOnly gradleApi()
     compileOnly "com.android.tools.build:gradle:3.6.2"
-    implementation project(":ProguardConfigurationResolver")
+    implementation project(path: ':ProguardConfigurationResolver', configuration: 'default')
+
 }
 
 apply from: rootProject.file('gradle/publish.gradle')
