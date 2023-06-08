@@ -33,7 +33,8 @@ ext {
     upload_maven_url_snapshot = UPLOAD_MAVEN_URL_SNAPSHOT
     upload_group = 'com.bytedance.android.byteX'
     upload_version = "0.3.0${(useSnapshotMaven.toBoolean() ? "-${doSh("git config user.name")}-SNAPSHOT" : "")}"
-    upload_dir = project.rootProject.file('gradle_plugins').path
+//    upload_dir = project.rootProject.file('gradle_plugins').path
+    upload_dir = '/Users/lidongjun/.m2/repository'
     gradle_version = '3.5.3'
     gson_version = '2.8.2'
     asm_version = '9.2'
@@ -43,6 +44,7 @@ ext {
     bintray_key = BINTRAY_KEY
 }
 println("upload2Maven:$upload2Maven")
+println("upload_dir:$upload_dir")
 println("useSnapshot:$useSnapshot")
 println("upload_user_name:$upload_user_name")
 println("upload_password:$upload_password")
