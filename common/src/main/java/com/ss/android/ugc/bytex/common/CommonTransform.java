@@ -204,13 +204,17 @@ public abstract class CommonTransform<X extends BaseContext> extends Transform {
 
     private void transformInternal(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation);
+        System.out.println("transformInternal() called with: transformInvocation = [" + transformInvocation + "]");
         if (!transformInvocation.isIncremental() && transformInvocation.getOutputProvider() != null) {
+            //如果是全量操作，先删除旧的输出内容
             transformInvocation.getOutputProvider().deleteAll();
         }
         TransformContext transformContext = getTransformContext(transformInvocation);
         init(transformContext);
+        //获取可用的Plguin（enable=true）
         List<IPlugin> plugins = getPlugins().stream().filter(p -> p.enable(transformContext)).collect(Collectors.toList());
         if (plugins.stream().anyMatch(iPlugin -> !iPlugin.transformConfiguration().isIncremental())) {
+            //如果plugin是全量操作，先处理这个插件非全量操作
             transformContext.requestNotIncremental();
         }
 
@@ -268,10 +272,12 @@ public abstract class CommonTransform<X extends BaseContext> extends Transform {
     }
 
     protected void afterTransform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
+        System.out.println( "afterTransform() called with: transformInvocation = [" + transformInvocation + "]");
     }
 
     protected void init(TransformContext transformContext) {
         LevelLog.sDefaultLogger = context.getLogger();
+        System.out.println(  "init() called with: transformContext = [" + transformContext + "]");
         if (BooleanProperty.ENABLE_HTML_LOG.value()) {
             String applicationId = "unknow";
             String versionName = "unknow";

@@ -1,5 +1,6 @@
 package com.ss.android.ugc.bytex.common.flow;
 
+import com.ss.android.ugc.bytex.common.log.LevelLog;
 import com.ss.android.ugc.bytex.transformer.TransformContext;
 import com.ss.android.ugc.bytex.transformer.TransformEngine;
 import com.ss.android.ugc.bytex.transformer.processor.FileProcessor;
@@ -47,6 +48,7 @@ public abstract class AbsTransformFlow implements TransformFlow {
     }
 
     protected void markRunningState(TransformContext.State state) {
+        System.out.println("AbsTransformFlow.markRunningState() called with: state = [" + state + "]");
         transformEngine.markRunningState(state);
     }
 
@@ -56,17 +58,20 @@ public abstract class AbsTransformFlow implements TransformFlow {
     }
 
     protected AbsTransformFlow traverse(FileProcessor... processors) throws IOException, InterruptedException {
+        System.out.println("AbsTransformFlow.traverse() called with: processors = [" + processors + "]");
         traverseArtifactOnly(processors);
         traverseAndroidJarOnly(processors);
         return this;
     }
 
     protected AbsTransformFlow traverseArtifactOnly(FileProcessor... processors) throws IOException, InterruptedException {
+        System.out.println("AbsTransformFlow.traverseArtifactOnly() called with: processors = [" + processors + "]");
         transformEngine.traverseOnly(processors);
         return this;
     }
 
     protected AbsTransformFlow traverseAndroidJarOnly(FileProcessor... processors) throws IOException, InterruptedException {
+        System.out.println("AbsTransformFlow.traverseAndroidJarOnly() called with: processors = [" + processors + "]");
         transformEngine.traverseAndroidJar(androidJar(), processors);
         return this;
     }
@@ -76,6 +81,7 @@ public abstract class AbsTransformFlow implements TransformFlow {
     }
 
     protected AbsTransformFlow transform(FileProcessor... processors) throws IOException, InterruptedException {
+        System.out.println("AbsTransformFlow.transform() called with: processors = [" + processors + "]");
         markRunningState(TransformContext.State.BEFORETRANSFORM);
         beforeTransform(transformEngine);
         markRunningState(TransformContext.State.TRANSFORMING);
@@ -88,6 +94,7 @@ public abstract class AbsTransformFlow implements TransformFlow {
     protected abstract AbsTransformFlow beforeTransform(TransformEngine transformEngine) throws IOException;
 
     protected AbsTransformFlow transform(TransformEngine transformEngine, boolean isLast, FileProcessor... processors) throws IOException {
+        System.out.println("AbsTransformFlow.transform() called with: transformEngine = [" + transformEngine + "], isLast = [" + isLast + "], processors = [" + processors + "]");
         transformEngine.transform(isLast, processors);
         return this;
     }

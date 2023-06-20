@@ -8,6 +8,7 @@ import com.ss.android.ugc.bytex.common.flow.TransformFlowListenerManager;
 import com.ss.android.ugc.bytex.common.graph.Graph;
 import com.ss.android.ugc.bytex.common.graph.GraphBuilder;
 import com.ss.android.ugc.bytex.common.graph.cache.CachedGraphBuilder;
+import com.ss.android.ugc.bytex.common.log.LevelLog;
 import com.ss.android.ugc.bytex.common.log.Timer;
 import com.ss.android.ugc.bytex.common.processor.ClassFileAnalyzer;
 import com.ss.android.ugc.bytex.common.processor.ClassFileTransformer;
@@ -18,6 +19,7 @@ import com.ss.android.ugc.bytex.transformer.processor.ClassFileProcessor;
 import com.ss.android.ugc.bytex.transformer.processor.FileHandler;
 import com.ss.android.ugc.bytex.transformer.processor.FileProcessor;
 import com.ss.android.ugc.bytex.transformer.processor.FilterFileProcessor;
+import com.ss.android.ugc.bytex.transformer.utils.FetchStackTrace;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,6 +54,8 @@ public class MainTransformFlow extends AbsTransformFlow {
 
     private void prepareInternal() throws IOException, InterruptedException {
         super.prepare();
+        System.out.println(  "MainTransformFlow.prepareInternal() called\n"+ FetchStackTrace.getStackTraceString(new Throwable()));
+        Thread.sleep(10);
         markRunningState(TransformContext.State.INITIALIZING);
         timer.startRecord("INIT");
         Schedulers.COMPUTATION().submitAndAwait(handlers, handler -> handler.init(transformEngine));
@@ -73,6 +77,7 @@ public class MainTransformFlow extends AbsTransformFlow {
             }
             markRunningState(TransformContext.State.BEFORETRAVERSE);
             Schedulers.COMPUTATION().submitAndAwait(handlers, plugin -> plugin.beforeTraverse(transformEngine));
+            Thread.sleep(10);
         }
     }
 
@@ -91,6 +96,7 @@ public class MainTransformFlow extends AbsTransformFlow {
     }
 
     private void runTransform() throws IOException, InterruptedException {
+        System.out.println(  "MainTransformFlow.runTransform() called"+ "\n"+FetchStackTrace.getStackTraceString(new Throwable()));
         markRunningState(TransformContext.State.RUNNING);
         if (handlers.isEmpty()) return;
         timer.startRecord("PRE_PROCESS");
@@ -181,6 +187,7 @@ public class MainTransformFlow extends AbsTransformFlow {
     }
 
     public final TransformFlow appendHandler(MainProcessHandler handler) {
+        System.out.println(  "MainTransformFlow.appendHandler() called with: handler = [" + handler + "]\n"+FetchStackTrace.getStackTraceString(new Throwable()));
         handlers.add(handler);
         listenerManager.onAppendMainProcessHandler(this, handler);
         return this;
@@ -188,6 +195,7 @@ public class MainTransformFlow extends AbsTransformFlow {
 
     @Override
     protected AbsTransformFlow beforeTransform(TransformEngine transformEngine) throws IOException {
+        System.out.println(  "MainTransformFlow.beforeTransform() called with: transformEngine = [" + transformEngine + "]\n"+FetchStackTrace.getStackTraceString(new Throwable()));
         Schedulers.COMPUTATION().submitAndAwait(handlers, plugin -> plugin.beforeTransform(transformEngine));
         return this;
     }
@@ -195,6 +203,7 @@ public class MainTransformFlow extends AbsTransformFlow {
     @Override
     protected AbsTransformFlow transform(TransformEngine transformEngine, boolean isLast, FileProcessor... processors) throws IOException {
         try {
+            System.out.println(  "MainTransformFlow.transform() called with: transformEngine = [" + transformEngine + "], isLast = [" + isLast + "], processors = [" + processors + "]\n"+FetchStackTrace.getStackTraceString(new Throwable()));
             GlobalMainProcessHandlerListener.INSTANCE.startTransform(handlers);
             AbsTransformFlow result = super.transform(transformEngine, isLast, processors);
             GlobalMainProcessHandlerListener.INSTANCE.finishTransform(handlers, null);
@@ -207,6 +216,7 @@ public class MainTransformFlow extends AbsTransformFlow {
 
     @Override
     protected AbsTransformFlow afterTransform(TransformEngine transformEngine) throws IOException {
+        System.out.println(  "MainTransformFlow.afterTransform() called with: transformEngine = [" + transformEngine +  "]\n"+FetchStackTrace.getStackTraceString(new Throwable()));
         Schedulers.COMPUTATION().submitAndAwait(handlers, plugin -> plugin.afterTransform(transformEngine));
         return this;
     }
@@ -219,6 +229,7 @@ public class MainTransformFlow extends AbsTransformFlow {
 
     @Override
     public void registerTransformFlowListener(TransformFlowListener listener) throws UnsupportedOperationException {
+        System.out.println( "MainTransformFlow.registerTransformFlowListener() called with: listener = [" + listener + "]\n"+FetchStackTrace.getStackTraceString(new Throwable()));
         listenerManager.registerTransformFlowListener(listener);
     }
 

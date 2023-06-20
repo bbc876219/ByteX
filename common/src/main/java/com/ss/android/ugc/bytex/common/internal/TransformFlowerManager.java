@@ -5,6 +5,7 @@ import com.ss.android.ugc.bytex.common.flow.TransformFlow;
 import com.ss.android.ugc.bytex.common.flow.main.MainTransformFlow;
 import com.ss.android.ugc.bytex.common.graph.EditableGraph;
 import com.ss.android.ugc.bytex.common.graph.Graph;
+import com.ss.android.ugc.bytex.common.log.LevelLog;
 import com.ss.android.ugc.bytex.transformer.TransformContext;
 import com.ss.android.ugc.bytex.transformer.TransformEngine;
 
@@ -22,6 +23,7 @@ public class TransformFlowerManager implements ITransformPipeline {
 
     @Override
     public void bind(final @NonNull FlowBinder binder) {
+        System.out.println("TransformFlowerManager.bind() called with: binder = [" + binder + "]");
         final TransformFlow flow = binder.bind(this);
         if (first == null) {
             first = flow;
@@ -60,6 +62,7 @@ public class TransformFlowerManager implements ITransformPipeline {
 
     @Override
     public void onPreTransform() throws IOException, InterruptedException {
+        System.out.println( "TransformFlowerManager.onPreTransform() called");
         for (TransformFlow flow : first) {
             flow.prepare();
         }
@@ -67,6 +70,7 @@ public class TransformFlowerManager implements ITransformPipeline {
 
     @Override
     public void runTransform() throws IOException, InterruptedException {
+        System.out.println( "TransformFlowerManager.runTransform() called");
         for (TransformFlow flow : first) {
             flow.run();
             Graph graph = flow.getClassGraph();
@@ -79,11 +83,14 @@ public class TransformFlowerManager implements ITransformPipeline {
 
     @Override
     public void onPostTransform() throws IOException {
+        System.out.println( "TransformFlowerManager.onPostTransform() called");
         engine.transformOutput();
+
     }
 
     @Override
     public void skipTransform() throws IOException {
+        System.out.println( "TransformFlowerManager.skipTransform() called");
         engine.skip();
     }
 

@@ -5,6 +5,7 @@ import com.android.build.gradle.api.BaseVariant;
 import com.android.build.gradle.internal.pipeline.TransformTask;
 import com.ss.android.ugc.bytex.common.flow.TransformFlow;
 import com.ss.android.ugc.bytex.common.flow.main.MainTransformFlow;
+import com.ss.android.ugc.bytex.common.log.LevelLog;
 import com.ss.android.ugc.bytex.gradletoolkit.TaskKt;
 import com.ss.android.ugc.bytex.transformer.TransformContext;
 
@@ -129,12 +130,14 @@ public interface IPlugin {
      * 准备执行的回调
      */
     default void startExecute(TransformContext transformContext) {
+        LevelLog.sDefaultLogger.i( "startExecute() called with: transformContext = [" + transformContext + "]");
     }
 
     /**
      * 插件执行执行结束后的回调，不管成功和失败都会执行.做一些数据回收处理工作
      */
     default void afterExecute() throws Throwable {
+        LevelLog.sDefaultLogger.i(  "afterExecute() called");
     }
 
     enum HookType {

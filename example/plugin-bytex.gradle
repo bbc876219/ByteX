@@ -4,7 +4,8 @@ import com.android.repository.Revision
 buildscript {
     repositories {
         maven {
-            url uri('../gradle_plugins')
+            //url uri('../gradle_plugins')
+            url uri("${System.env.HOME}/.m2/repository")
         }
         maven {
             url "https://artifact.bytedance.com/repository/byteX/"

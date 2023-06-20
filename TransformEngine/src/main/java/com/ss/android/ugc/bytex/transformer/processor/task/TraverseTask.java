@@ -21,6 +21,7 @@ public class TraverseTask extends RecursiveAction implements Callable<Void> {
         this.fileCache = fileCache;
         this.file = file;
         this.processors = processors;
+        //System.out.println( "TraverseTask() called with: fileCache = [" + fileCache + "], file = [" + file + "], processors = [" + processors + "]");
     }
 
     @Override

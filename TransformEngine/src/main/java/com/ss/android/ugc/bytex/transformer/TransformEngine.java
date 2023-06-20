@@ -41,10 +41,12 @@ public class TransformEngine {
     }
 
     public void transform(boolean isLast, FileProcessor... processors) {
+        System.out.println("TransformEngine.transform() called with: isLast = [" + isLast + "], processors = [" + processors + "]");
         Schedulers.FORKJOINPOOL().invoke(new PerformTransformTask(context.allFiles(), getProcessorList(processors), isLast, context));
     }
 
     public void skip() throws IOException {
+        System.out.println("TransformEngine.skip() called");
         Worker worker = Schedulers.IO();
         context.allFiles()
                 .map(f -> (Callable<Void>) () -> {
@@ -56,6 +58,7 @@ public class TransformEngine {
     }
 
     public void transformOutput() throws IOException {
+        System.out.println("TransformEngine.transformOutput() called");
         Worker worker = Schedulers.IO();
         context.allFiles()
                 .filter(fileCache -> !fileCache.isHasWritten())
@@ -68,10 +71,12 @@ public class TransformEngine {
     }
 
     public void traverseOnly(FileProcessor... processors) {
+        System.out.println("TransformEngine.traverseOnly() called with: processors = [" + processors + "]");
         Schedulers.FORKJOINPOOL().invoke(new PerformTraverseTask(context.allFiles(), getProcessorList(processors)));
     }
 
     public void traverseAndroidJar(File jar, FileProcessor... processors) {
+        System.out.println("TransformEngine.traverseAndroidJar() called with: jar = [" + jar + "], processors = [" + processors + "]");
         Schedulers.FORKJOINPOOL().invoke(new PerformTraverseTask(Stream.of(new JarCache(jar, context.isIncremental() ? Status.NOTCHANGED : Status.ADDED, context)), getProcessorList(processors)));
     }
 

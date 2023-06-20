@@ -2,6 +2,7 @@ package com.ss.android.ugc.bytex.common.flow;
 
 import com.ss.android.ugc.bytex.common.builder.internal.GlobalByteXBuildListener;
 import com.ss.android.ugc.bytex.common.flow.main.MainProcessHandler;
+import com.ss.android.ugc.bytex.common.log.LevelLog;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
 
     @Override
     public void startPrepare(@Nonnull TransformFlow transformFlow) {
+        System.out.println( "TransformFlowListenerManager.startPrepare() called with: transformFlow = [" + transformFlow + "]");
         for (TransformFlowListener listener : getListeners()) {
             listener.startPrepare(transformFlow);
         }
@@ -32,6 +34,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
 
     @Override
     public void finishPrepare(@Nonnull TransformFlow transformFlow, @Nullable Exception exception) {
+        System.out.println( "TransformFlowListenerManager.finishPrepare() called with: transformFlow = [" + transformFlow + "], exception = [" + exception + "]");
         for (TransformFlowListener listener : getListeners()) {
             listener.finishPrepare(transformFlow, exception);
         }
@@ -39,6 +42,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
 
     @Override
     public void startRunning(@Nonnull TransformFlow transformFlow, boolean isIncremental) {
+        System.out.println( "TransformFlowListenerManager.startRunning() called with: transformFlow = [" + transformFlow + "], isIncremental = [" + isIncremental + "]");
         for (TransformFlowListener listener : getListeners()) {
             listener.startRunning(transformFlow, isIncremental);
         }
@@ -46,6 +50,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
 
     @Override
     public void finishRunning(@Nonnull TransformFlow transformFlow, @Nullable Exception exception) {
+        System.out.println( "TransformFlowListenerManager.finishRunning() called with: transformFlow = [" + transformFlow + "], exception = [" + exception + "]");
         for (TransformFlowListener listener : getListeners()) {
             listener.finishRunning(transformFlow, exception);
         }
@@ -53,6 +58,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
 
     @Override
     public void onAppendMainProcessHandler(@Nonnull TransformFlow transformFlow, MainProcessHandler handler) {
+        System.out.println("TransformFlowListenerManager.onAppendMainProcessHandler() called with: transformFlow = [" + transformFlow + "], handler = [" + handler + "]");
         for (TransformFlowListener listener : getListeners()) {
             listener.onAppendMainProcessHandler(transformFlow, handler);
         }
@@ -63,6 +69,7 @@ public class TransformFlowListenerManager implements TransformFlowListener {
     }
 
     public synchronized void registerTransformFlowListener(TransformFlowListener listener) {
+        System.out.println( "TransformFlowListenerManager.registerTransformFlowListener() called with: listener = [" + listener + "]");
         listeners.add(listener);
     }
 

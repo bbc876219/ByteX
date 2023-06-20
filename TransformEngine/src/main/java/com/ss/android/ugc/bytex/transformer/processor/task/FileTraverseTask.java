@@ -19,16 +19,19 @@ public class FileTraverseTask extends RecursiveAction implements Callable<Void> 
     public FileTraverseTask(FileCache f, List<FileProcessor> processors) {
         this.processors = processors;
         this.fileCache = f;
+        //System.out.println("FileTraverseTask() called with: f = [" + f + "], processors = [" + processors + "]");
     }
 
     @Override
     public Void call() throws Exception {
+        //System.out.println("FileTraverseTask.call() called");
         fileCache.forEach(file -> new TraverseTask(fileCache, file, processors));
         return null;
     }
 
     @Override
     protected void compute() {
+        //System.out.println("FileTraverseTask.compute() called");
         List<TraverseTask> tasks = fileCache.stream()
                 .flatMap((Function<FileData, ObservableSource<TraverseTask>>) fileData ->
                         Observable.create(emitter -> {
